@@ -1,7 +1,6 @@
 import React from 'react'
 import style from '../styl/index.styl'
 import MyAccordion from './MyAccordion'
-import MyCollapse from './MyCollapse.js'
 
 function getPosts(ctx){
   fetch(`https://content.guardianapis.com/search?api-key=b69c7ad6-778c-43c2-a36b-856c5e7881ca`)
@@ -42,8 +41,12 @@ class App extends React.Component {
             getPosts(this)
           }
         >Refresh</button>
-        
-        <MyCollapse posts={this.state.posts} />
+        {
+          this.state.posts.length && 
+          this.state.posts.map(it => <MyAccordion title={it.title} apiUrl={it.apiUrl} key={it.title} />)
+          || <h3 id='error'>Sorry, we couldn`t find news for you. Please try again later.</h3>
+        }
+
       </div>
     )
   }
