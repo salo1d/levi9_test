@@ -14,7 +14,37 @@ module.exports = {
         test: /\.jsx?$/, 
         exclude: /node_modules/, 
         loader: "babel-loader" 
-      }
+      },
+      {
+        test: /\.styl|\.css$/,
+        use: [
+            {
+                loader: 'style-loader',
+                // options: { sourceMap: true }
+            },
+            {
+                loader: 'css-loader',
+                // options: { sourceMap: true }
+            },
+            {
+                loader: 'postcss-loader',
+                options: {
+                    plugins: [
+                        require('postcss-smart-import')({ /* ...options */ }),
+                        require('precss')({ /* ...options */ }),
+                        require('autoprefixer')({ /* ...options */ })
+                    ],
+                    // sourceMap: true
+                }
+            },
+            {
+                loader: 'stylus-loader',
+                options: {
+                    // sourceMap: true
+                }
+            }
+        ]
+    }
     ]
   },
   devtool: 'source-map',
