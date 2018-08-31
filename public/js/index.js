@@ -162,13 +162,22 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: _styl_index_styl__WEBPACK_IMPORTED_MODULE_1___default.a.app
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "The Guardian News"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, this.state.posts.length && this.state.posts.map(function (it) {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "The Guardian News"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        id: "refresh",
+        onClick: function onClick() {
+          return getPosts(_this2);
+        }
+      }, "Refresh"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, this.state.posts.length && this.state.posts.map(function (it) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
           key: it.title
         }, it.title);
-      }) || react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Sorry")));
+      }) || react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+        id: "error"
+      }, "Sorry, we couldn`t find news for you. Please try again later.")));
     }
   }]);
 
@@ -214,7 +223,7 @@ exports = module.exports = __webpack_require__(/*! ../node_modules/css-loader/li
 
 
 // module
-exports.push([module.i, ".-K3WaO2YWK61CEFSo7gUa {\n  display: flex;\n  justify-content: center;\n  flex-direction: column;\n}\n.-K3WaO2YWK61CEFSo7gUa >h1 {\n  text-align: center;\n}\n.-K3WaO2YWK61CEFSo7gUa >ul {\n  margin: auto;\n}\n.-K3WaO2YWK61CEFSo7gUa #refresh {\n  max-width: 100px;\n  margin: auto;\n  margin-bottom: 20px;\n}\n", ""]);
+exports.push([module.i, ".-K3WaO2YWK61CEFSo7gUa {\n  display: flex;\n  justify-content: center;\n  flex-direction: column;\n}\n.-K3WaO2YWK61CEFSo7gUa >h1 {\n  text-align: center;\n}\n.-K3WaO2YWK61CEFSo7gUa >ul {\n  margin: auto;\n}\n.-K3WaO2YWK61CEFSo7gUa #error {\n  color: #f00;\n}\n.-K3WaO2YWK61CEFSo7gUa #refresh {\n  max-width: 100px;\n  margin: auto;\n  margin-bottom: 20px;\n}\n", ""]);
 
 // exports
 exports.locals = {

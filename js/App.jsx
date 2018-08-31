@@ -37,11 +37,16 @@ class App extends React.Component {
     return (
       <div className={style.app}>
         <h1>The Guardian News</h1>
+        <button id='refresh'
+          onClick={() => 
+            getPosts(this)
+          }
+        >Refresh</button>
         <ul>
           {
             this.state.posts.length && 
             this.state.posts.map(it => <li key={it.title}>{it.title}</li>)
-            || <h3>Sorry</h3>
+            || <h3 id='error'>Sorry, we couldn`t find news for you. Please try again later.</h3>
           }
         </ul>
       </div>
