@@ -121,11 +121,14 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+var numberOfPages, currentPage;
 
-function getPosts(ctx) {
-  fetch("https://content.guardianapis.com/search?api-key=b69c7ad6-778c-43c2-a36b-856c5e7881ca").then(function (a) {
+function getPosts(ctx, page) {
+  fetch("http://content.guardianapis.com/search?api-key=b69c7ad6-778c-43c2-a36b-856c5e7881ca".concat(page && "&page=".concat(page) || '')).then(function (a) {
     return a.json();
   }).then(function (json) {
+    currentPage = json.response.currentPage;
+    numberOfPages = json.response.pages;
     ctx.setState({
       posts: json.response.results.map(function (item) {
         return {
@@ -157,6 +160,7 @@ function (_React$Component) {
   _createClass(App, [{
     key: "componentDidMount",
     value: function componentDidMount() {
+      console.log(this);
       getPosts(this);
     }
   }, {
@@ -179,7 +183,21 @@ function (_React$Component) {
         });
       }) || react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
         id: "error"
-      }, "Sorry, we couldn`t find news for you. Please try again later."));
+      }, 'Sorry, we couldn\`t find news for you. Please try again later.'), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "pagination"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "prevPage",
+        onClick: function onClick() {
+          return getPosts(_this2, currentPage - 1);
+        }
+      }, '< Previous Page'), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "pages"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, '[' + currentPage + '] of ' + numberOfPages)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "nextPage",
+        onClick: function onClick() {
+          return getPosts(_this2, currentPage + 1);
+        }
+      }, 'Next Page >')));
     }
   }]);
 
@@ -219,7 +237,7 @@ function MyAccordion(props) {
           return a.json();
         }).then(function (json) {
           // console.log(json.response.content)
-          panel.getElementsByClassName('panelText')[0].innerText = json.response.content.blocks.body[json.response.content.blocks.body.length - 1].bodyTextSummary + '...';
+          panel.getElementsByClassName('panelText')[0].innerText = json.response.content.blocks.body[json.response.content.blocks.body.length - 1].bodyTextSummary.slice(0, 500) + '...';
           panel.getElementsByClassName('panelA')[0].href = json.response.content.webUrl;
         });
         panel.style.display = "block";
@@ -301,7 +319,7 @@ exports = module.exports = __webpack_require__(/*! ../node_modules/css-loader/li
 
 
 // module
-exports.push([module.i, ".-K3WaO2YWK61CEFSo7gUa {\n  display: flex;\n  justify-content: center;\n  flex-direction: column;\n}\n.-K3WaO2YWK61CEFSo7gUa >h1 {\n  text-align: center;\n}\n.-K3WaO2YWK61CEFSo7gUa >ul {\n  margin: auto;\n}\n.-K3WaO2YWK61CEFSo7gUa #error {\n  color: #f00;\n  margin: auto;\n}\n.-K3WaO2YWK61CEFSo7gUa #refresh {\n  max-width: 200px;\n  margin: auto;\n  margin-bottom: 20px;\n  color: #555;\n  border: 2px solid #555;\n  padding: 16px 32px;\n  text-align: center;\n  text-decoration: none;\n  display: inline-block;\n  font-size: 16px;\n  transition-duration: 0.4s;\n  cursor: pointer;\n}\n.-K3WaO2YWK61CEFSo7gUa #refresh:hover {\n  background-color: #555;\n  color: #fff;\n}\n.-K3WaO2YWK61CEFSo7gUa .accordion {\n  margin: auto;\n  background-color: #eee;\n  color: #444;\n  cursor: pointer;\n  padding: 18px;\n  width: 1000px;\n  border: none;\n  text-align: left;\n  outline: none;\n  font-size: 15px;\n  transition: 0.4s;\n}\n.-K3WaO2YWK61CEFSo7gUa .active,\n.-K3WaO2YWK61CEFSo7gUa .accordion:hover {\n  background-color: #ccc;\n}\n.-K3WaO2YWK61CEFSo7gUa .panel {\n  max-width: 950px;\n  padding: 0 25px;\n  display: none;\n  background-color: #fff;\n  overflow: hidden;\n}\n.-K3WaO2YWK61CEFSo7gUa .MyAccordion {\n  margin: auto;\n}\n", ""]);
+exports.push([module.i, ".-K3WaO2YWK61CEFSo7gUa {\n  display: flex;\n  justify-content: center;\n  flex-direction: column;\n}\n.-K3WaO2YWK61CEFSo7gUa >h1 {\n  text-align: center;\n}\n.-K3WaO2YWK61CEFSo7gUa >ul {\n  margin: auto;\n}\n.-K3WaO2YWK61CEFSo7gUa #error {\n  color: #f00;\n  margin: auto;\n}\n.-K3WaO2YWK61CEFSo7gUa #refresh {\n  max-width: 200px;\n  margin: auto;\n  margin-bottom: 20px;\n  color: #444;\n  border: 2px solid #444;\n  padding: 16px 32px;\n  text-align: center;\n  text-decoration: none;\n  display: inline-block;\n  font-size: 16px;\n  transition-duration: 0.4s;\n  cursor: pointer;\n}\n.-K3WaO2YWK61CEFSo7gUa #refresh:hover {\n  background-color: #444;\n  color: #fff;\n}\n.-K3WaO2YWK61CEFSo7gUa .accordion {\n  margin: auto;\n  background-color: #eee;\n  color: #444;\n  cursor: pointer;\n  padding: 18px;\n  width: 1000px;\n  border: none;\n  text-align: left;\n  outline: none;\n  font-size: 15px;\n  transition: 0.4s;\n}\n.-K3WaO2YWK61CEFSo7gUa .active,\n.-K3WaO2YWK61CEFSo7gUa .accordion:hover {\n  background-color: #ccc;\n}\n.-K3WaO2YWK61CEFSo7gUa .panel {\n  max-width: 950px;\n  padding: 0 25px;\n  display: none;\n  background-color: #fff;\n  overflow: hidden;\n}\n.-K3WaO2YWK61CEFSo7gUa .MyAccordion {\n  margin: auto;\n}\n.-K3WaO2YWK61CEFSo7gUa .pagination {\n  width: 90%;\n  margin: auto;\n  margin-top: 30px;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.-K3WaO2YWK61CEFSo7gUa .pagination .prevPage,\n.-K3WaO2YWK61CEFSo7gUa .pagination .nextPage {\n  margin-bottom: 20px;\n  color: #444;\n  border: none;\n  padding: 13px 32px;\n  text-align: center;\n  text-decoration: none;\n  display: inline-block;\n  font-size: 16px;\n  transition-duration: 0.4s;\n  cursor: pointer;\n}\n.-K3WaO2YWK61CEFSo7gUa .pagination .pages {\n  align-self: center;\n  color: #444;\n}\n", ""]);
 
 // exports
 exports.locals = {

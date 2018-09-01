@@ -16,7 +16,7 @@ function MyAccordion(props){
             })
             .then(function(json){
               // console.log(json.response.content)
-              panel.getElementsByClassName('panelText')[0].innerText = json.response.content.blocks.body[json.response.content.blocks.body.length - 1].bodyTextSummary + '...';
+              panel.getElementsByClassName('panelText')[0].innerText = json.response.content.blocks.body[json.response.content.blocks.body.length - 1].bodyTextSummary.slice(0,500) + '...';
               panel.getElementsByClassName('panelA')[0].href = json.response.content.webUrl;
             })
             panel.style.display = "block";
