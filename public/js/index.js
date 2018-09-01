@@ -181,7 +181,13 @@ function (_React$Component) {
     key: "onEnter",
     value: function onEnter(e) {
       if (e.key == 'Enter') {
-        getPosts(this, document.getElementById('pageInput').value);
+        if (document.getElementById('pageInput').value <= this.state.numberOfPages) {
+          getPosts(this, document.getElementById('pageInput').value);
+        } else {
+          alert('Please enter correct number of page!');
+          getPosts(this, this.state.currentPage);
+          document.getElementById('pageInput').value = this.state.currentPage;
+        }
       }
     }
   }, {
