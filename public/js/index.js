@@ -110,26 +110,25 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 
 
-var numberOfPages, currentPage;
+
 
 function getPosts(ctx, page) {
   fetch("http://content.guardianapis.com/search?api-key=b69c7ad6-778c-43c2-a36b-856c5e7881ca".concat(page && "&page=".concat(page) || '')).then(function (a) {
     return a.json();
   }).then(function (json) {
-    currentPage = json.response.currentPage;
-    numberOfPages = json.response.pages;
     ctx.setState({
+      numberOfPages: json.response.pages,
+      currentPage: json.response.currnetPage,
       posts: json.response.results.map(function (item) {
         return {
           title: item.webTitle,
@@ -152,15 +151,24 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
     _this.state = {
-      posts: []
+      posts: [],
+      numberOfPages: 0,
+      currentPage: 1
     };
+    _this.onEnter = _this.onEnter.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
   _createClass(App, [{
+    key: "onEnter",
+    value: function onEnter(e) {
+      if (e.key == 'Enter') {
+        getPosts(this, document.getElementById('pageInput').value);
+      }
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      console.log(this);
       getPosts(this);
     }
   }, {
@@ -188,14 +196,21 @@ function (_React$Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         className: "prevPage",
         onClick: function onClick() {
-          return getPosts(_this2, currentPage - 1);
+          return getPosts(_this2, _this2.state.currentPage - 1);
         }
       }, '< Previous Page'), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "pages"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, '[' + currentPage + '] of ' + numberOfPages)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, '['), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "number",
+        id: "pageInput",
+        min: "1",
+        max: this.state.numberOfPages,
+        defaultValue: this.state.currentPage,
+        onKeyPress: this.onEnter
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, '] of ' + this.state.numberOfPages)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         className: "nextPage",
         onClick: function onClick() {
-          return getPosts(_this2, currentPage + 1);
+          return getPosts(_this2, _this2.state.currentPage + 1);
         }
       }, 'Next Page >')));
     }
@@ -319,7 +334,7 @@ exports = module.exports = __webpack_require__(/*! ../node_modules/css-loader/li
 
 
 // module
-exports.push([module.i, ".-K3WaO2YWK61CEFSo7gUa {\n  display: flex;\n  justify-content: center;\n  flex-direction: column;\n}\n.-K3WaO2YWK61CEFSo7gUa >h1 {\n  text-align: center;\n}\n.-K3WaO2YWK61CEFSo7gUa >ul {\n  margin: auto;\n}\n.-K3WaO2YWK61CEFSo7gUa #error {\n  color: #f00;\n  margin: auto;\n}\n.-K3WaO2YWK61CEFSo7gUa #refresh {\n  max-width: 200px;\n  margin: auto;\n  margin-bottom: 20px;\n  color: #444;\n  border: 2px solid #444;\n  padding: 16px 32px;\n  text-align: center;\n  text-decoration: none;\n  display: inline-block;\n  font-size: 16px;\n  transition-duration: 0.4s;\n  cursor: pointer;\n}\n.-K3WaO2YWK61CEFSo7gUa #refresh:hover {\n  background-color: #444;\n  color: #fff;\n}\n.-K3WaO2YWK61CEFSo7gUa .accordion {\n  margin: auto;\n  background-color: #eee;\n  color: #444;\n  cursor: pointer;\n  padding: 18px;\n  width: 1000px;\n  border: none;\n  text-align: left;\n  outline: none;\n  font-size: 15px;\n  transition: 0.4s;\n}\n.-K3WaO2YWK61CEFSo7gUa .active,\n.-K3WaO2YWK61CEFSo7gUa .accordion:hover {\n  background-color: #ccc;\n}\n.-K3WaO2YWK61CEFSo7gUa .panel {\n  max-width: 950px;\n  padding: 0 25px;\n  display: none;\n  background-color: #fff;\n  overflow: hidden;\n}\n.-K3WaO2YWK61CEFSo7gUa .MyAccordion {\n  margin: auto;\n}\n.-K3WaO2YWK61CEFSo7gUa .pagination {\n  width: 90%;\n  margin: auto;\n  margin-top: 30px;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.-K3WaO2YWK61CEFSo7gUa .pagination .prevPage,\n.-K3WaO2YWK61CEFSo7gUa .pagination .nextPage {\n  margin-bottom: 20px;\n  color: #444;\n  border: none;\n  padding: 13px 32px;\n  text-align: center;\n  text-decoration: none;\n  display: inline-block;\n  font-size: 16px;\n  transition-duration: 0.4s;\n  cursor: pointer;\n}\n.-K3WaO2YWK61CEFSo7gUa .pagination .pages {\n  align-self: center;\n  color: #444;\n}\n", ""]);
+exports.push([module.i, ".-K3WaO2YWK61CEFSo7gUa {\n  display: flex;\n  justify-content: center;\n  flex-direction: column;\n}\n.-K3WaO2YWK61CEFSo7gUa >h1 {\n  text-align: center;\n}\n.-K3WaO2YWK61CEFSo7gUa >ul {\n  margin: auto;\n}\n.-K3WaO2YWK61CEFSo7gUa #error {\n  color: #f00;\n  margin: auto;\n}\n.-K3WaO2YWK61CEFSo7gUa #refresh {\n  max-width: 200px;\n  margin: auto;\n  margin-bottom: 20px;\n  color: #444;\n  border: 2px solid #444;\n  padding: 16px 32px;\n  text-align: center;\n  text-decoration: none;\n  display: inline-block;\n  font-size: 16px;\n  transition-duration: 0.4s;\n  cursor: pointer;\n}\n.-K3WaO2YWK61CEFSo7gUa #refresh:hover {\n  background-color: #444;\n  color: #fff;\n}\n.-K3WaO2YWK61CEFSo7gUa .accordion {\n  margin: auto;\n  background-color: #eee;\n  color: #444;\n  cursor: pointer;\n  padding: 18px;\n  width: 1000px;\n  border: none;\n  text-align: left;\n  outline: none;\n  font-size: 15px;\n  transition: 0.4s;\n}\n.-K3WaO2YWK61CEFSo7gUa .active,\n.-K3WaO2YWK61CEFSo7gUa .accordion:hover {\n  background-color: #ccc;\n}\n.-K3WaO2YWK61CEFSo7gUa .panel {\n  max-width: 950px;\n  padding: 0 25px;\n  display: none;\n  background-color: #fff;\n  overflow: hidden;\n}\n.-K3WaO2YWK61CEFSo7gUa .MyAccordion {\n  margin: auto;\n}\n.-K3WaO2YWK61CEFSo7gUa .pagination {\n  width: 90%;\n  margin: auto;\n  margin-top: 30px;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.-K3WaO2YWK61CEFSo7gUa .pagination .prevPage,\n.-K3WaO2YWK61CEFSo7gUa .pagination .nextPage {\n  margin-bottom: 20px;\n  color: #444;\n  border: none;\n  padding: 13px 32px;\n  text-align: center;\n  text-decoration: none;\n  display: inline-block;\n  font-size: 16px;\n  transition-duration: 0.4s;\n  cursor: pointer;\n}\n.-K3WaO2YWK61CEFSo7gUa .pagination .pages {\n  align-self: center;\n  color: #444;\n  display: flex;\n  flex-direction: row;\n}\n.-K3WaO2YWK61CEFSo7gUa #pageInput {\n  height: 10px;\n  width: 30px;\n  align-self: center;\n  border: none;\n}\n", ""]);
 
 // exports
 exports.locals = {

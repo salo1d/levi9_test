@@ -2,7 +2,6 @@ import React from 'react'
 import style from '../styl/index.styl'
 import MyAccordion from './MyAccordion'
 
-var numberOfPages, currentPage;
 
 function getPosts(ctx, page){
   fetch(`http://content.guardianapis.com/search?api-key=b69c7ad6-778c-43c2-a36b-856c5e7881ca${page && `&page=${page}` || ''}`)
@@ -10,9 +9,9 @@ function getPosts(ctx, page){
     return a.json();
   })
   .then(function(json){
-    currentPage = json.response.currentPage;
-    numberOfPages = json.response.pages;
     ctx.setState({
+      numberOfPages: json.response.pages,
+      currentPage: json.response.currnetPage,
       posts: json.response.results
         .map(function(item){
           return {
@@ -28,12 +27,20 @@ class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      posts: []
+      posts: [],
+      numberOfPages: 0,
+      currentPage: 1
     };
+    this.onEnter = this.onEnter.bind(this);
+  }
+
+  onEnter(e){
+    if (e.key == 'Enter') {
+      getPosts(this, document.getElementById('pageInput').value);
+    }
   }
 
   componentDidMount(){
-    console.log(this);
     getPosts(this);
   }
 
@@ -55,12 +62,16 @@ class App extends React.Component {
         <div className="pagination">
           <button className="prevPage" 
             onClick={() =>
-              getPosts(this, currentPage - 1)
+              getPosts(this, this.state.currentPage - 1)
             }>{'< Previous Page'}</button>
-          <div className='pages'><p>{'[' + currentPage + '] of ' + numberOfPages}</p></div>
+          <div className='pages'>
+            <p>{'['}</p>
+            <input type="number" id="pageInput" min='1' max={this.state.numberOfPages} defaultValue={this.state.currentPage} onKeyPress={this.onEnter}
+            />
+            <p>{'] of ' + this.state.numberOfPages}</p></div>
           <button className="nextPage" 
             onClick={() =>
-              getPosts(this, currentPage + 1)
+              getPosts(this, this.state.currentPage + 1)
             }>{'Next Page >'}</button>
         </div>
 
