@@ -123,12 +123,14 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 
 function getPosts(ctx, page) {
+  console.log(parseInt(page));
   fetch("http://content.guardianapis.com/search?api-key=b69c7ad6-778c-43c2-a36b-856c5e7881ca".concat(page && "&page=".concat(page) || '')).then(function (a) {
     return a.json();
   }).then(function (json) {
+    console.log(json.response.pages);
     ctx.setState({
       numberOfPages: json.response.pages,
-      currentPage: json.response.currnetPage,
+      currentPage: json.response.currentPage,
       posts: json.response.results.map(function (item) {
         return {
           title: item.webTitle,
@@ -136,6 +138,8 @@ function getPosts(ctx, page) {
         };
       })
     });
+  }).then(function () {
+    document.getElementById('pageInput').defaultValue = ctx.state.currentPage;
   });
 }
 
@@ -156,10 +160,26 @@ function (_React$Component) {
       currentPage: 1
     };
     _this.onEnter = _this.onEnter.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.nearestPageButton = _this.nearestPageButton.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
   _createClass(App, [{
+    key: "nearestPageButton",
+    value: function nearestPageButton(e) {
+      if (e.target.className == 'nextPage') {
+        if (this.state.currentPage != this.state.numberOfPages) {
+          getPosts(this, this.state.currentPage + 1);
+          document.getElementById('pageInput').value = this.state.currentPage + 1;
+        }
+      } else {
+        if (this.state.currentPage != 1) {
+          getPosts(this, this.state.currentPage - 1);
+          document.getElementById('pageInput').value = this.state.currentPage - 1;
+        }
+      }
+    }
+  }, {
     key: "onEnter",
     value: function onEnter(e) {
       if (e.key == 'Enter') {
@@ -181,7 +201,7 @@ function (_React$Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "The Guardian News"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         id: "refresh",
         onClick: function onClick() {
-          return getPosts(_this2);
+          return getPosts(_this2, _this2.state.currentPage);
         }
       }, "Refresh"), this.state.posts.length && this.state.posts.map(function (it) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_MyAccordion__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -195,9 +215,7 @@ function (_React$Component) {
         className: "pagination"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         className: "prevPage",
-        onClick: function onClick() {
-          return getPosts(_this2, _this2.state.currentPage - 1);
-        }
+        onClick: this.nearestPageButton
       }, '< Previous Page'), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "pages"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, '['), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
@@ -209,9 +227,7 @@ function (_React$Component) {
         onKeyPress: this.onEnter
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, '] of ' + this.state.numberOfPages)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         className: "nextPage",
-        onClick: function onClick() {
-          return getPosts(_this2, _this2.state.currentPage + 1);
-        }
+        onClick: this.nearestPageButton
       }, 'Next Page >')));
     }
   }]);
@@ -334,7 +350,7 @@ exports = module.exports = __webpack_require__(/*! ../node_modules/css-loader/li
 
 
 // module
-exports.push([module.i, ".-K3WaO2YWK61CEFSo7gUa {\n  display: flex;\n  justify-content: center;\n  flex-direction: column;\n}\n.-K3WaO2YWK61CEFSo7gUa >h1 {\n  text-align: center;\n}\n.-K3WaO2YWK61CEFSo7gUa >ul {\n  margin: auto;\n}\n.-K3WaO2YWK61CEFSo7gUa #error {\n  color: #f00;\n  margin: auto;\n}\n.-K3WaO2YWK61CEFSo7gUa #refresh {\n  max-width: 200px;\n  margin: auto;\n  margin-bottom: 20px;\n  color: #444;\n  border: 2px solid #444;\n  padding: 16px 32px;\n  text-align: center;\n  text-decoration: none;\n  display: inline-block;\n  font-size: 16px;\n  transition-duration: 0.4s;\n  cursor: pointer;\n}\n.-K3WaO2YWK61CEFSo7gUa #refresh:hover {\n  background-color: #444;\n  color: #fff;\n}\n.-K3WaO2YWK61CEFSo7gUa .accordion {\n  margin: auto;\n  background-color: #eee;\n  color: #444;\n  cursor: pointer;\n  padding: 18px;\n  width: 1000px;\n  border: none;\n  text-align: left;\n  outline: none;\n  font-size: 15px;\n  transition: 0.4s;\n}\n.-K3WaO2YWK61CEFSo7gUa .active,\n.-K3WaO2YWK61CEFSo7gUa .accordion:hover {\n  background-color: #ccc;\n}\n.-K3WaO2YWK61CEFSo7gUa .panel {\n  max-width: 950px;\n  padding: 0 25px;\n  display: none;\n  background-color: #fff;\n  overflow: hidden;\n}\n.-K3WaO2YWK61CEFSo7gUa .MyAccordion {\n  margin: auto;\n}\n.-K3WaO2YWK61CEFSo7gUa .pagination {\n  width: 90%;\n  margin: auto;\n  margin-top: 30px;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.-K3WaO2YWK61CEFSo7gUa .pagination .prevPage,\n.-K3WaO2YWK61CEFSo7gUa .pagination .nextPage {\n  margin-bottom: 20px;\n  color: #444;\n  border: none;\n  padding: 13px 32px;\n  text-align: center;\n  text-decoration: none;\n  display: inline-block;\n  font-size: 16px;\n  transition-duration: 0.4s;\n  cursor: pointer;\n}\n.-K3WaO2YWK61CEFSo7gUa .pagination .pages {\n  align-self: center;\n  color: #444;\n  display: flex;\n  flex-direction: row;\n}\n.-K3WaO2YWK61CEFSo7gUa #pageInput {\n  height: 10px;\n  width: 30px;\n  align-self: center;\n  border: none;\n}\n", ""]);
+exports.push([module.i, ".-K3WaO2YWK61CEFSo7gUa {\n  display: flex;\n  justify-content: center;\n  flex-direction: column;\n}\n.-K3WaO2YWK61CEFSo7gUa >h1 {\n  text-align: center;\n}\n.-K3WaO2YWK61CEFSo7gUa >ul {\n  margin: auto;\n}\n.-K3WaO2YWK61CEFSo7gUa #error {\n  color: #f00;\n  margin: auto;\n}\n.-K3WaO2YWK61CEFSo7gUa #refresh {\n  max-width: 200px;\n  margin: auto;\n  margin-bottom: 20px;\n  color: #444;\n  border: 2px solid #444;\n  padding: 16px 32px;\n  text-align: center;\n  text-decoration: none;\n  display: inline-block;\n  font-size: 16px;\n  transition-duration: 0.4s;\n  cursor: pointer;\n}\n.-K3WaO2YWK61CEFSo7gUa #refresh:hover {\n  background-color: #444;\n  color: #fff;\n}\n.-K3WaO2YWK61CEFSo7gUa .accordion {\n  margin: auto;\n  background-color: #eee;\n  color: #444;\n  cursor: pointer;\n  padding: 18px;\n  width: 1000px;\n  border: none;\n  text-align: left;\n  outline: none;\n  font-size: 15px;\n  transition: 0.4s;\n}\n.-K3WaO2YWK61CEFSo7gUa .active,\n.-K3WaO2YWK61CEFSo7gUa .accordion:hover {\n  background-color: #ccc;\n}\n.-K3WaO2YWK61CEFSo7gUa .panel {\n  max-width: 950px;\n  padding: 0 25px;\n  display: none;\n  background-color: #fff;\n  overflow: hidden;\n}\n.-K3WaO2YWK61CEFSo7gUa .MyAccordion {\n  margin: auto;\n}\n.-K3WaO2YWK61CEFSo7gUa .pagination {\n  width: 90%;\n  margin: auto;\n  margin-top: 30px;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.-K3WaO2YWK61CEFSo7gUa .pagination .prevPage,\n.-K3WaO2YWK61CEFSo7gUa .pagination .nextPage {\n  margin-bottom: 20px;\n  color: #444;\n  border: none;\n  padding: 13px 32px;\n  text-align: center;\n  text-decoration: none;\n  display: inline-block;\n  font-size: 16px;\n  transition-duration: 0.4s;\n  cursor: pointer;\n}\n.-K3WaO2YWK61CEFSo7gUa .pagination .pages {\n  align-self: center;\n  color: #444;\n  display: flex;\n  flex-direction: row;\n}\n.-K3WaO2YWK61CEFSo7gUa #pageInput {\n  height: 10px;\n  width: 50px;\n  align-self: center;\n  border: none;\n}\n", ""]);
 
 // exports
 exports.locals = {
