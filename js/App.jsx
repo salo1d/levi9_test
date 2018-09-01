@@ -4,13 +4,11 @@ import MyAccordion from './MyAccordion'
 
 
 function getPosts(ctx, page){
-  console.log(parseInt(page));
   fetch(`http://content.guardianapis.com/search?api-key=b69c7ad6-778c-43c2-a36b-856c5e7881ca${page && `&page=${page}` || ''}`)
   .then(function(a){
     return a.json();
   })
   .then(function(json){
-    console.log(json.response.pages);
     ctx.setState({
       numberOfPages: json.response.pages,
       currentPage: json.response.currentPage,

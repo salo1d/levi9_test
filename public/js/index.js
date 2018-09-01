@@ -123,11 +123,9 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 
 function getPosts(ctx, page) {
-  console.log(parseInt(page));
   fetch("http://content.guardianapis.com/search?api-key=b69c7ad6-778c-43c2-a36b-856c5e7881ca".concat(page && "&page=".concat(page) || '')).then(function (a) {
     return a.json();
   }).then(function (json) {
-    console.log(json.response.pages);
     ctx.setState({
       numberOfPages: json.response.pages,
       currentPage: json.response.currentPage,
@@ -267,7 +265,6 @@ function MyAccordion(props) {
         fetch(props.apiUrl + '?show-blocks=body&api-key=b69c7ad6-778c-43c2-a36b-856c5e7881ca').then(function (a) {
           return a.json();
         }).then(function (json) {
-          // console.log(json.response.content)
           panel.getElementsByClassName('panelText')[0].innerText = json.response.content.blocks.body[json.response.content.blocks.body.length - 1].bodyTextSummary.slice(0, 500) + '...';
           panel.getElementsByClassName('panelA')[0].href = json.response.content.webUrl;
         });
@@ -279,6 +276,7 @@ function MyAccordion(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
     className: "panelText"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    target: "_blanc",
     className: "panelA"
   }, "Read full news")));
 } // var acc = document.getElementsByClassName("accordion");
