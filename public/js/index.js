@@ -126,6 +126,7 @@ function getPosts(ctx, page) {
   fetch("http://content.guardianapis.com/search?api-key=b69c7ad6-778c-43c2-a36b-856c5e7881ca".concat(page && "&page=".concat(page) || '')).then(function (a) {
     return a.json();
   }).then(function (json) {
+    console.log(json);
     ctx.setState({
       numberOfPages: json.response.pages,
       currentPage: json.response.currentPage,
@@ -136,8 +137,6 @@ function getPosts(ctx, page) {
         };
       })
     });
-  }).then(function () {
-    document.getElementById('pageInput').defaultValue = ctx.state.currentPage;
   });
 }
 
@@ -181,7 +180,7 @@ function (_React$Component) {
     key: "onEnter",
     value: function onEnter(e) {
       if (e.key == 'Enter') {
-        if (document.getElementById('pageInput').value <= this.state.numberOfPages) {
+        if (document.getElementById('pageInput').value <= this.state.numberOfPages && document.getElementById('pageInput').value > 0) {
           getPosts(this, document.getElementById('pageInput').value);
         } else {
           alert('Please enter correct number of page!');
