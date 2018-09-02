@@ -126,7 +126,6 @@ function getPosts(ctx, page) {
   fetch("http://content.guardianapis.com/search?api-key=b69c7ad6-778c-43c2-a36b-856c5e7881ca".concat(page && "&page=".concat(page) || '')).then(function (a) {
     return a.json();
   }).then(function (json) {
-    console.log(json);
     ctx.setState({
       numberOfPages: json.response.pages,
       currentPage: json.response.currentPage,
@@ -137,6 +136,10 @@ function getPosts(ctx, page) {
         };
       })
     });
+  }).catch(function () {
+    alert('Guardian content API does not support paging this far. Please change page or page-size.');
+    getPosts(ctx, 1);
+    document.getElementById('pageInput').value = 1;
   });
 }
 

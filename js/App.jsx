@@ -9,7 +9,6 @@ function getPosts(ctx, page){
     return a.json();
   })
   .then(function(json){
-    console.log(json);
     ctx.setState({
       numberOfPages: json.response.pages,
       currentPage: json.response.currentPage,
@@ -21,6 +20,11 @@ function getPosts(ctx, page){
           };
         })
     });
+  })
+  .catch(function() {
+    alert('Guardian content API does not support paging this far. Please change page or page-size.');
+    getPosts(ctx, 1);
+    document.getElementById('pageInput').value = 1;
   })
 }
 
@@ -53,7 +57,6 @@ class App extends React.Component {
   onEnter(e){
     if (e.key == 'Enter') {
       if (document.getElementById('pageInput').value <= this.state.numberOfPages && document.getElementById('pageInput').value > 0) {
-
         getPosts(this, document.getElementById('pageInput').value);
       } else {
         alert ('Please enter correct number of page!');
